@@ -35,7 +35,7 @@ Vue.component('polygraph', {
       return "fill:" + this.color
     },
     points: function () {
-      return this.scalePoints(0.8)
+      return calcPoints(this.stats)
       //return calcPoints(this.stats, 1)
     },
     basePoints : function(){
@@ -44,17 +44,21 @@ Vue.component('polygraph', {
       }).join(" ")
     },
     frameTriangles : function(){
-      var pts = this.scalePoints(1)
-      return this.generateTriangles(this.trianglePoints(pts), this.stats)
+      var stats = this.stats.map(function(st){
+        return {
+          length: st.length + 20,
+          angle:  st.angle,
+          sat:    st.sat, 
+        }
+      })
+      var pts = calcPoints(stats)
+      return this.generateTriangles(this.trianglePoints(pts), stats)
     },
     triangles : function(){
       return this.generateTriangles(this.trianglePoints(this.points), this.stats)
     },
   },
   methods : {
-    scalePoints : function(scale){
-      return calcPoints(this.stats, scale)
-    },
     generateTriangles : function(tri, stats){
       var clr = this.color
       return stats.map(function(st, i){
