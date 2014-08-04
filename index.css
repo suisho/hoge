@@ -1,0 +1,15 @@
+body {
+    font-family: Helvetica Neue, Arial, sans-serif;
+}
+
+label {
+    display: inline-block;
+    margin-left: 10px;
+    width: 20px;
+}
+
+#raw {
+    position: absolute;
+    top: 0;
+    left: 300px;
+}

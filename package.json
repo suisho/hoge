@@ -1,0 +1,22 @@
+{
+  "name": "vue-halite",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "watchify   -e index.js -o dist/build.js -v --deps -d",
+    "build": "browserify -e index.js -o dist/build.js -v "
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^5.9.1",
+    "watchify": "^1.0.1"
+  },
+  "dependencies": {
+    "d3": "^3.4.11",
+    "d3-browserify": "^3.3.13",
+    "onecolor": "^2.4.1"
+  }
+}

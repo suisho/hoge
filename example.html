@@ -1,0 +1,36 @@
+<html>
+  <link rel="stylesheet" href="index.css">
+  <body>
+    <!-- template for the polygraph component. -->
+    <template id="polygraph-template">
+      <svg width="200" height="200">
+        <g transform="translate(100,100)">
+          <polygon v-attr="points:basePoints, style:style"></polygon>
+          <path v-attr="d:d, style : style" v-component="triangle" v-repeat="triangles"></path>
+        </g>
+      </svg>
+    </template>
+
+    <div id="demo">
+      <!-- Use the component -->
+      <svg v-component="polygraph" 
+            v-with="stats:stats, color:color" 
+            v-ref="polygon" 
+            height="250">
+      </svg>
+      <!-- controls -->
+      <div v-repeat="stats">
+
+        <input type="range" v-model="length" min="30" max="100" />
+        <span>{{length}}</span>
+        
+        <input type="range" v-model="angle" min="0" max="100" />
+        <span>{{angle}}</span>
+        
+        <input type="range" v-model="sat" min="0" max="100" />
+        <span>{{sat}}</span>
+      </div>
+    </div>        
+    <script src="dist/build.js"></script>
+  </body>
+</html>
