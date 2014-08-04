@@ -1,29 +1,15 @@
 var Vue = require('vue')
 var oneColor = require("onecolor")
-
-function gaucianRandom() {
-  //return Math.random() 
-  var u = 1 - Math.random()
-  var v = 1 - Math.random()
-  return Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v)
-}
-
-var defaultStat = function(){
-  return { 
-    length: gaucianRandom() * 10 + 50,
-    angle:  gaucianRandom() * 30 + 50,
-    sat:    gaucianRandom() * 35 + 50
-  }
-}
-var stats = []
-for(var i=0; i < 8; i++){
-  stats.push( defaultStat())
-}
+var calcPoints = require("./lib/points")
+var generateRandomStat = require("./lib/dummy")
 
 Vue.component('triangle', {
   computed : {
     style : function(){
       return "fill:" + this.color
+    },
+    frameStyle : function(){
+      return "fill:transparent; stroke:white"
     },
     color : function(){
       return oneColor(this.baseColor).saturation(this.sat).hex()
@@ -36,35 +22,51 @@ Vue.component('triangle', {
     d : function(){
       return "M"+this.points+"z"
     }
+  
   }
 })
 
 // A resusable polygon graph component
 Vue.component('polygraph', {
   template: '#polygraph-template',
+  replace: true,
   computed: {
     style : function(){
       return "fill:" + this.color
     },
     points: function () {
-      var total = this.stats.length
-      var rad = Math.PI * 2 / total
-      
-      return this.stats.map(function (stat, i) {
-        var angle = rad * (i + stat.angle/100)
-        
-        var point = angleToPoint(stat.length, angle)
-        return point
-      })
+      return this.scalePoints(0.8)
+      //return calcPoints(this.stats, 1)
     },
     basePoints : function(){
       return this.points.map(function(stat){
         return stat.x + "," + stat.y
       }).join(" ")
     },
-    trianglePoints : function(){
-      return this.points.map(function(point, i, points){
-        //if(i == 2 || i == 4 || i ==7) return // 超暫定
+    frameTriangles : function(){
+      var pts = this.scalePoints(1)
+      return this.generateTriangles(this.trianglePoints(pts), this.stats)
+    },
+    triangles : function(){
+      return this.generateTriangles(this.trianglePoints(this.points), this.stats)
+    },
+  },
+  methods : {
+    scalePoints : function(scale){
+      return calcPoints(this.stats, scale)
+    },
+    generateTriangles : function(tri, stats){
+      var clr = this.color
+      return stats.map(function(st, i){
+        return {
+          baseColor: clr,
+          sat : st.sat/100,
+          triangle : tri[i]
+        }
+      })
+    },
+    trianglePoints : function(points){
+      return points.map(function(point, i, points){
         var next = (i + 1) % points.length
         return [
           {x:0, y:0},
@@ -75,40 +77,17 @@ Vue.component('polygraph', {
         return item === undefined ? false : true
       })
     },
-    triangles : function(){
-      var tri = this.trianglePoints
-      var clr = this.color
-      return this.stats.map(function(st, i){
-        return {
-          baseColor: clr,
-          sat : st.sat/100,
-          triangle : tri[i]
-        }
-      })
-    }
+    
   },
 })
-
-// math helper...
-function angleToPoint (length, angle) {
-  var x     = 0,
-      y     = length
-      cos   = Math.cos(angle),
-      sin   = Math.sin(angle),
-      tx    = x * cos - y * sin ,
-      ty    = x * sin + y * cos 
-  return {
-    x: tx,
-    y: ty 
-  }
-}
 
 // bootstrap the demo
 window.app = new Vue({
   el: '#demo',
+  replace:true,
   data: {
     newLabel: '',
-    stats: stats,
+    stats: generateRandomStat(),
     color : "#8ed7f1"
   }
 })
