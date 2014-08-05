@@ -17,6 +17,7 @@
   "dependencies": {
     "d3": "^3.4.11",
     "d3-browserify": "^3.3.13",
+    "extend": "^1.3.0",
     "onecolor": "^2.4.1"
   }
 }

@@ -2,8 +2,11 @@ var Vue = require('vue')
 var oneColor = require("onecolor")
 var calcPoints = require("./lib/points")
 var generateRandomStat = require("./lib/dummy")
-
+var extend = require("extend")
 Vue.component('triangle', {
+  data : {
+    z : true
+  },
   computed : {
     style : function(){
       return "fill:" + this.color
@@ -20,9 +23,9 @@ Vue.component('triangle', {
       }).join(' ')
     },
     d : function(){
-      return "M"+this.points+"z"
+      var z = this.z ? "z" : ""
+      return "M"+this.points + z
     }
-  
   }
 })
 
@@ -34,8 +37,18 @@ Vue.component('polygraph', {
     style : function(){
       return "fill:" + this.color
     },
+    vStats : function(){
+      return this.stats.map(function(st){
+        return {
+          length: st.length - 16,
+          angle:  st.angle,
+          sat:    st.sat, 
+        }
+      })
+    },
     points: function () {
-      return calcPoints(this.stats)
+      
+      return calcPoints(this.vStats)
       //return calcPoints(this.stats, 1)
     },
     basePoints : function(){
@@ -44,29 +57,24 @@ Vue.component('polygraph', {
       }).join(" ")
     },
     frameTriangles : function(){
-      var stats = this.stats.map(function(st){
-        return {
-          length: st.length + 20,
-          angle:  st.angle,
-          sat:    st.sat, 
-        }
+      var pts = calcPoints(this.stats)
+      return this.generateTriangles(this.trianglePoints(pts), this.stats, {
+        z : false
       })
-      var pts = calcPoints(stats)
-      return this.generateTriangles(this.trianglePoints(pts), stats)
     },
     triangles : function(){
-      return this.generateTriangles(this.trianglePoints(this.points), this.stats)
+      return this.generateTriangles(this.trianglePoints(this.points), this.vStats)
     },
   },
   methods : {
-    generateTriangles : function(tri, stats){
+    generateTriangles : function(tri, stats, opt ){
       var clr = this.color
       return stats.map(function(st, i){
-        return {
+        return extend({
           baseColor: clr,
           sat : st.sat/100,
           triangle : tri[i]
-        }
+        }, opt)
       })
     },
     trianglePoints : function(points){
