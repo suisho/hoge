@@ -1,0 +1,29 @@
+html
+  head
+    scss:
+      body{
+        background: #333;
+      }
+      $base-color: #8ed7f1;
+      polygon.base{
+        fill: $base-color;
+      }
+      
+      polygon.triangle{
+        fill: transparent
+      }
+      polygon.triangle.dark{
+        fill: darken($base-color, 20% );
+      }
+      
+      polygon.triangle.light{
+        fill: lighten($base-color, 20% );
+      }
+  body
+    h1 slim
+    - @halites.each do |halite|
+      svg width=200 height=200
+        g transform="translate(100,100)"
+          - halite.polygons.each do |p|
+            polygon class="#{p.css_class}" points="#{p.svg_points}" 
+            
