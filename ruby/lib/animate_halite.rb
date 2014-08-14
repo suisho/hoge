@@ -26,6 +26,14 @@ class AnimateHalite
       @css_class
     end
     
+    def svg_colors
+      (1..@points.length).map {
+        s = Random.rand(0..100)
+        l = Random.rand(0..100)
+        "hsl(196, 74%, #{l}%)"
+      }.join(";")
+    end
+    
     def svg_points
       pts = @points.map do |pts|
         pts.svg_points

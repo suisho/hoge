@@ -2,7 +2,7 @@ html
   head
     scss:
       body{
-        background: #333;
+        background: white;
       }
       $base-color: #8ed7f1;
       polygon.base{
@@ -25,5 +25,16 @@ html
       g transform="translate(100,100)"
         - @halite.polygons.each do |p|
           polygon class="#{p.css_class}" 
-            animate values="#{p.svg_points};" repeatCount="indefinite" dur="30s" attributeType="XML" attributeName="points"
+            animate(
+              values="#{p.svg_points}" 
+              repeatCount="indefinite" 
+              dur="20s" 
+              attributeType="XML" 
+              attributeName="points")
+            animate(
+              attributeType="css" 
+              attributeName="fill" 
+              values="#{p.svg_colors}" 
+              dur="3s" 
+              repeatCount="indefinite") 
           

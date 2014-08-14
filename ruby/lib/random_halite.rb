@@ -8,15 +8,23 @@ class RandomHalite
     end
     AnimateHalite.new(halites)
   end
+  
   def self.halite(r)
-    Halite.new(
-      (1..8).map do { 
+    state = (1..8).map do 
+      { 
         # 長さ
         norm:  r.rand(0..100),
         # 角度(基本角度に対する追加分) 
         degree: r.rand(0..100)
       }
-      end
+    end
+    c = 0
+    center = {
+      x: r.rand(-10..10) * c,
+      y: r.rand(-10..10) * c
+    }
+    Halite.new(
+      state,  center
     )
   end
 end
