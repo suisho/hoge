@@ -12,7 +12,7 @@ also_reload "lib/*"
 
 # Your modular application code goes here...
 get '/' do
-  @halites = (0..30).map do
+  @halites = (0..10).map do
     RandomHalite.generate
   end
   slim :halite
