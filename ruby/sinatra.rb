@@ -4,6 +4,7 @@ require 'slim'
 require 'json'
 
 require './lib/halite'
+require './lib/random_halite'
 
 register Sinatra::Reloader
 also_reload "lib/*"
@@ -11,13 +12,7 @@ also_reload "lib/*"
 
 # Your modular application code goes here...
 get '/' do
-  halites = [
-    Halite.generate_random,
-    Halite.generate_random,
-    Halite.generate_random,
-    Halite.generate_random,
-  ]
-  @halites = halites
+  @halite = RandomHalite.generate
   slim :halite
 end
 

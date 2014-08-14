@@ -10,7 +10,7 @@ html
       }
       
       polygon.triangle{
-        fill: transparent
+        fill: $base-color;
       }
       polygon.triangle.dark{
         fill: darken($base-color, 20% );
@@ -21,9 +21,9 @@ html
       }
   body
     h1 slim
-    - @halites.each do |halite|
-      svg width=200 height=200
-        g transform="translate(100,100)"
-          - halite.polygons.each do |p|
-            polygon class="#{p.css_class}" points="#{p.svg_points}" 
-            
+    svg width=200 height=200
+      g transform="translate(100,100)"
+        - @halite.polygons.each do |p|
+          polygon class="#{p.css_class}" 
+            animate values="#{p.svg_points};" repeatCount="indefinite" dur="30s" attributeType="XML" attributeName="points"
+          

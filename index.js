@@ -33,6 +33,13 @@ Vue.component('triangle', {
 Vue.component('polygraph', {
   template: '#polygraph-template',
   replace: true,
+  data : {
+    frameCount : 1
+  },
+  ready: function(){
+    this.animationStartTime = new Date()
+    this.animate()
+  },
   computed: {
     style : function(){
       return "fill:" + this.color
@@ -47,9 +54,7 @@ Vue.component('polygraph', {
       })
     },
     points: function () {
-      
       return calcPoints(this.vStats)
-      //return calcPoints(this.stats, 1)
     },
     basePoints : function(){
       return this.points.map(function(stat){
@@ -79,14 +84,36 @@ Vue.component('polygraph', {
     },
     trianglePoints : function(points){
       return points.map(function(point, i, points){
-        var next = (i + 1) % points.length
         return [
           {x:0, y:0},
           points[i],
-          points[next]
+          points[(i + 1) % points.length]
         ]
-      }).filter(function(item){
-        return item === undefined ? false : true
+      })
+    },
+    generateAnimateIncrement : function(){
+      return {
+        length : Math.random() * 10 - 5,
+        angle : Math.random() * 10 - 5,
+        sat   : Math.random() * 10 - 5,
+      }
+    
+    },
+    animate :function(time){
+      var self = this
+      var frameStep = 50
+      if((this.frameCount % frameStep) == 1){
+        this.incrementationSet = generateAnimateIncrement
+      }      
+      
+      this.stats.forEach(function(st){
+        st.length += self.incrementationSet.length / frameStep
+        st.angle +=  self.incrementationSet.angle / frameStep
+        st.sat +=    self.incrementationSet.sat / frameStep
+      })
+      this.frameCount++
+      Vue.nextTick(function(e){
+        self.animate(e)
       })
     },
     
@@ -94,7 +121,7 @@ Vue.component('polygraph', {
 })
 
 // bootstrap the demo
-window.app = new Vue({
+var app = new Vue({
   el: '#demo',
   replace:true,
   data: {
@@ -103,3 +130,4 @@ window.app = new Vue({
     color : "#8ed7f1"
   }
 })
+

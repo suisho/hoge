@@ -9,6 +9,6 @@ class Polygon
   end
   
   def svg_points
-    @points.map{ |p| p.join(",") }.join(" ")
-  end
+    @points.map{ |p| "#{p[:x]},#{p[:y]}" }.join(" ")
+  end  
 end

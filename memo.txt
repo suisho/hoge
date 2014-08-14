@@ -17,3 +17,6 @@ i % 4 = 0
 0 3 6 = i * 3 + 3 % i
 
 function(i){ return (i * 3) % 8 }(1)
+
+length = Math.sqlt(x*x + y*y)
+length + z = 
