@@ -9,19 +9,18 @@ class Halite
   end
   
   def points
-    rad = Math::PI * 2 / @params.length
-    @points ||= @params.map.with_index do |param, i|      
-      p param[:degree]/100.0
-      angle = rad * (i + (param[:degree] / 100.0) )
-      calc_point(param[:norm], angle)
-    end
+    @points ||= param_to_points(0)
+  end
+  
+  # ちょっとだけずらして、互いのtriangleをかぶせる
+  def npoints
+    @npoints ||= param_to_points(1)
   end
 
   def triangles
     @triangles ||= points.map.with_index do |pt, i|
-      [ @center,
-        points[i],
-        points[(i + 1) % points.length] ]
+      np = npoints[(i + 1) % points.length]
+      [ @center, points[i], np]
     end
   end
   
@@ -42,7 +41,8 @@ class Halite
   end
   
   def polygons
-    @polygons ||= [base_polygon] + triangle_polygons
+    #@polygons ||= [base_polygon] + triangle_polygons
+    @polygons ||=  triangle_polygons
   end
 
   private
@@ -53,4 +53,14 @@ class Halite
       y: (norm * Math.cos(angle)).round(2)
     }
   end
+  
+  def param_to_points(base_degree=0)
+    rad = Math::PI * 2 / @params.length
+    @params.map.with_index do |param, i|
+      angle_addition = (param[:degree] + base_degree) / 100.0
+      angle = rad * (i + angle_addition )
+      calc_point(param[:norm], angle)
+    end
+  end
+  
 end
