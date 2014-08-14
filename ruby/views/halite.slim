@@ -21,20 +21,21 @@ html
       }
   body
     h1 slim
-    svg width=200 height=200
-      g transform="translate(100,100)"
-        - @halite.polygons.each do |p|
-          polygon class="#{p.css_class}" 
-            animate(
-              values="#{p.svg_points}" 
-              repeatCount="indefinite" 
-              dur="20s" 
-              attributeType="XML" 
-              attributeName="points")
-            animate(
-              attributeType="css" 
-              attributeName="fill" 
-              values="#{p.svg_colors}" 
-              dur="3s" 
-              repeatCount="indefinite") 
-          
+    - @halites.each do |halite|
+      svg width=200 height=200
+        g transform="translate(100,100)"
+          - halite.polygons.each do |p|
+            polygon class="#{p.css_class}" 
+              animate(
+                values="#{p.svg_points}" 
+                repeatCount="indefinite" 
+                dur="20s" 
+                attributeType="XML" 
+                attributeName="points")
+              animate(
+                attributeType="css" 
+                attributeName="fill" 
+                values="#{p.svg_colors}" 
+                dur="3s" 
+                repeatCount="indefinite") 
+            
