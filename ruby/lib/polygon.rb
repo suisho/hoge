@@ -1,14 +1,13 @@
 class Polygon
-  def initialize(points, css_class)
+  def initialize(points)
     @points = points
-    @css_class = css_class
   end
-  
-  def css_class
-    @css_class.join(" ")
-  end
-  
+
   def svg_points
-    "M" + @points.map{ |p| "#{p[:x]},#{p[:y]}" }.join(" ") 
+    "M" + @points.map{ |p| point_path(p) }.join(" ") 
   end  
+  
+  def point_path(p)
+    "#{p[:x]},#{p[:y]}" 
+  end
 end

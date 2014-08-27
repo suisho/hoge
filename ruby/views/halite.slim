@@ -2,41 +2,59 @@ html
   head
     scss:
       body{
-        background: white;
+        background: black;
       }
       $base-color: #8ed7f1;
-      polygon.base{
+      path.base{
         fill: $base-color;
       }
       
-      polygon.triangle{
+      path.triangle{
         fill: $base-color;
       }
-      polygon.triangle.dark{
+      path.triangle.dark{
         fill: darken($base-color, 20% );
       }
       
-      polygon.triangle.light{
+      path.triangle.light{
         fill: lighten($base-color, 20% );
+      }
+      animate{
+        animation-play-state: paused;
+      }
+
+      path.triangle.frame{
+        &,
+        &.ligth,
+        &.dark{
+          fill : transparent;
+          stroke : white;
+        }
       }
   body
     h1 slim
     - @halites.each do |halite|
-      svg width=200 height=200
+      svg width=200 height=200 
         g transform="translate(100,100)"
-          - halite.polygons.each do |p|
-            path class="#{p.css_class}"
-              animate(
+          - halite.polygons.each.with_index do |p, i|
+            path class="#{@css_classes[i]}" d="#{p.first_svg_path}"
+              __animate(
                 attributeType="css" 
                 attributeName="fill" 
                 values="#{p.svg_colors}" 
                 dur="3s" 
-                begin="0s"
                 repeatCount="indefinite") 
               animate(
                 values="#{p.svg_points}" 
                 repeatCount="indefinite" 
-                dur="20s" 
-                begin="0s"
+                dur="20s"
+                begin="svmouseover"
                 attributeType="XML" 
                 attributeName="d")
+javascript:
+  /*var svg = document.querySelectorAll("svg")
+  for(var i=0; i < svg.length; i++){
+    var el = svg[i]
+    el.pauseAnimations()
+    el.
+  }*/

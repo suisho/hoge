@@ -14,28 +14,28 @@ class AnimateHalite
     h = Random.rand(0..360)
     
     polygon_set.map.with_index do |p,i|
-      AnimatePolygon.new(p, @halites[0].polygons[i].css_class,h)
+      AnimatePolygon.new(p, h)
     end
   end
 
   class AnimatePolygon 
-    def initialize(points, css_class, h)
+    def initialize(points, h)
       @points = points
-      @css_class = css_class
       @h = h
-    end
-    
-    def css_class
-      @css_class
     end
     
     def svg_colors
       (1..@points.length).map {
         s = Random.rand(0..100)
         l = Random.rand(0..100)
-        "hsl(#{h}, 74%, #{l}%)"
+        "hsl(#{@h}, 74%, #{l}%)"
       }.join(";")
     end
+    
+    def first_svg_path
+      @points.first.svg_points
+    end
+    
     
     def svg_points
       pts = @points.map do |pts|

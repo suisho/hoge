@@ -12,9 +12,21 @@ also_reload "lib/*"
 
 # Your modular application code goes here...
 get '/' do
-  @halites = (0..10).map do
+  @halites = (1..10).map do
     RandomHalite.generate
   end
+  css_classes = %w(
+      middle
+      dark 
+      middle
+      dark
+      light 
+      middle 
+      dark 
+      light 
+  )
+  @css_classes = css_classes.map{ |c| c + " triangle frame" }
+
   slim :halite
 end
 

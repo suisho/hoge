@@ -19,34 +19,23 @@ class Halite
 
   def triangles
     @triangles ||= points.map.with_index do |pt, i|
-      np = npoints[(i + 1) % points.length]
+      np = points[(i + 1) % points.length]
       [ @center, points[i], np]
     end
   end
   
-  def triangle_polygons
-    color = [
-      "middle",
-      "dark", 
-      "middle",
-      "dark",
-      "light", 
-      "middle", 
-      "dark", 
-      "light", 
-    ]
-    self.triangles.map.with_index do |t, i| 
-      Polygon.new(t, ["triangle", color[i] ] ) 
-    end
-  end
-  
   def polygons
-    #@polygons ||= [base_polygon] + triangle_polygons
-    @polygons ||=  triangle_polygons
+    @polygons ||= triangle_polygons
   end
 
   private
-  
+
+  def triangle_polygons
+    self.triangles.map.with_index do |t, i| 
+      Polygon.new(t) 
+    end
+  end  
+
   def calc_point(norm, angle)
     {
       x: (norm * Math.sin(angle)).round(2),
