@@ -34,7 +34,7 @@ html
   body
     h1 slim
     - @halites.each do |halite|
-      svg width=200 height=200 
+      svg width=200 height=200
         g transform="translate(100,100)"
           - halite.polygons.each.with_index do |p, i|
             path class="#{@css_classes[i]}" d="#{p.first_svg_path}"
@@ -48,7 +48,7 @@ html
                 values="#{p.svg_points}" 
                 repeatCount="indefinite" 
                 dur="20s"
-                begin="svmouseover"
+                begin="___"
                 attributeType="XML" 
                 attributeName="d")
 javascript:
