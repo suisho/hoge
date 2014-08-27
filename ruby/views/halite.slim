@@ -25,17 +25,18 @@ html
       svg width=200 height=200
         g transform="translate(100,100)"
           - halite.polygons.each do |p|
-            polygon class="#{p.css_class}" 
-              animate(
-                values="#{p.svg_points}" 
-                repeatCount="indefinite" 
-                dur="20s" 
-                attributeType="XML" 
-                attributeName="points")
+            path class="#{p.css_class}"
               animate(
                 attributeType="css" 
                 attributeName="fill" 
                 values="#{p.svg_colors}" 
                 dur="3s" 
+                begin="0s"
                 repeatCount="indefinite") 
-            
+              animate(
+                values="#{p.svg_points}" 
+                repeatCount="indefinite" 
+                dur="20s" 
+                begin="0s"
+                attributeType="XML" 
+                attributeName="d")
